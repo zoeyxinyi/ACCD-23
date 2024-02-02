@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Example 1 for The WWW as a Rube Goldberg machine</title>
+</head>
+<body>
+    <button role="button" id="initTrigger">Get An Advice!</button>
+    
+    <section id="adviceSection"></section>
+    <section id="emojiSection"></section>
+    <section id="memeSection"></section>
+
+    <script>
+        const triggerButton = document.getElementById('initTrigger');
+        const emojiSection = document.getElementById('emojiSection');
+        const adviceSection = document.getElementById('adviceSection');
+        const memeSection = document.getElementById('memeSection');
+
+        const emojiURL = "https://emojihub.yurace.pro/api/random";
+        const adviceURL = "https://api.adviceslip.com/advice";
+        const memeURL = "https://api.imgflip.com/get_memes";
+
+        const fetchEmojiData = () => {
+            fetch(emojiURL)
+                .then(response => response.json())
+                .then(data => appendEmojiData(data))
+                .catch(error => console.error("Emoji API error:", error));
+        }
+
+        const appendEmojiData = (data) => {
+            console.log(data);
+
+            const emojiName = data.name;
+            const emojiHtmlCode = data.htmlCode[0];
+
+            const emojiParagraph = document.createElement('p');
+            emojiParagraph.innerHTML = emojiHtmlCode;
+            emojiSection.appendChild(emojiParagraph);
+        }
+
+        const fetchAdviceData = () => {
+            fetch(adviceURL)
+                .then(response => response.json())
+                .then(data => appendAdviceData(data))
+                .catch(error => console.error("Advice API error:", error));
+        }
+
+        const appendAdviceData = (data) => {
+            console.log(data);
+
+            const advice = data.slip.advice;
+
+            const adviceHeader = document.createElement('h3');
+            adviceHeader.innerText = "Advice: " + advice;
+            adviceSection.appendChild(adviceHeader);
+        }
+
+        const fetchMemeData = () => {
+            fetch(memeURL)
+                .then(response => response.json())
+                .then(data => appendMemeData(data))
+                .catch(error => console.error("Meme API error:", error));
+        }
+
+        const appendMemeData = (data) => {
+            console.log(data);
+
+            const memes = data.data.memes;
+            const randomMeme = memes[Math.floor(Math.random() * memes.length)];
+
+            const memeImage = document.createElement('img');
+            memeImage.src = randomMeme.url;
+            memeImage.alt = randomMeme.name;
+
+            // Clear previous content
+            memeSection.innerHTML = '';
+
+            // Append the selected meme
+            memeSection.appendChild(memeImage);
+        }
+
+        triggerButton.addEventListener("click", () => {
+            // Clear previous content
+            emojiSection.innerHTML = '';
+            adviceSection.innerHTML = '';
+
+            // Fetch and display emoji data
+            fetchEmojiData();
+
+            // Fetch and display advice data
+            fetchAdviceData();
+
+            // Fetch and display one random meme
+            fetchMemeData();
+        });
+    </script>
+</body>
+</html>
