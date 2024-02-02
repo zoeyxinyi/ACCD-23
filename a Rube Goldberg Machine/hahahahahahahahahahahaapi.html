@@ -4,13 +4,13 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Example 1 for The WWW as a Rube Goldberg machine</title>
+    <title>WWW as a Rube Goldberg machine</title>
 </head>
 <body>
     <button role="button" id="initTrigger">Get Wise Advice!</button>
     
-    <section id="adviceSection"></section>
     <section id="emojiSection"></section>
+    <section id="adviceSection"></section>
     <section id="memeSection"></section>
 
     <script>
@@ -36,8 +36,9 @@
             const emojiName = data.name;
             const emojiHtmlCode = data.htmlCode[0];
 
-            const emojiParagraph = document.createElement('p');
-            emojiParagraph.innerHTML = emojiHtmlCode;
+            const emojiParagraph = document.createElement('h1');
+            emojiParagraph.innerHTML = emojiHtmlCode + "says:";
+            emojiParagraph.style.fontSize = "72px"
             emojiSection.appendChild(emojiParagraph);
         }
 
@@ -53,8 +54,9 @@
 
             const advice = data.slip.advice;
 
-            const adviceHeader = document.createElement('h3');
-            adviceHeader.innerText = "Advice: " + advice;
+            const adviceHeader = document.createElement('h1');
+            adviceHeader.innerText = advice;
+            //"Advice: " + 
             adviceSection.appendChild(adviceHeader);
         }
 
